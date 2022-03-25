@@ -792,4 +792,19 @@ function template_maint_warning_below()
 
 }
 
+add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
+
+function menu_ekle(array &$buttons){
+		$buttons = array_merge([
+			'portal' => [
+				'title'       => 'portal',
+				'href'        => 'url',
+				'icon'        => 'home',
+				'show'        => true,
+				'action_hook' => true,
+				'is_last'     => '',
+			],
+		], $buttons);
+}
+
 ?>
