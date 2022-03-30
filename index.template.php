@@ -9,7 +9,14 @@
  *
  * @version 2.1.0
  */
-
+ /**
+ * @package isim
+ * @version 1.0
+ * @theme isim
+ * @author Snrj and cee山 - https://smf.web.tr
+ * Copyright 2022 isim
+ *
+ */
 /*	This template is, perhaps, the most important template in the theme. It
 	contains the main template layer that displays the header and footer of
 	the forum, namely with main_above and main_below. It also contains the
@@ -48,7 +55,7 @@ function template_init()
 	$settings['theme_version'] = '2.1';
 
 	// Set the following variable to true if this theme requires the optional theme strings file to be loaded.
-	$settings['require_theme_strings'] = false;
+	$settings['require_theme_strings'] = true;
 
 	// Set the following variable to true if this theme wants to display the avatar of the user that posted the last and the first post on the message index and recent pages.
 	$settings['avatars_on_indexes'] = false;
@@ -117,10 +124,11 @@ function template_html_above()
 			'integrate_load_theme' hook for adding multiple files, or using
 			'integrate_pre_css_output', 'integrate_pre_javascript_output' for a single file.
 	*/
-
+	loadCSSFile('color.css', array('minimize' => true));
+	loadCSSFile('bootstrap.min.css', array('minimize' => true));
 	// load in any css from mods or themes so they can overwrite if wanted
 	template_css();
-
+	loadJavaScriptFile('bootstrap.min.js', array('minimize' => true));
 	// load in any javascript files from mods and themes
 	template_javascript();
 
@@ -459,6 +467,7 @@ function template_body_below()
 		<ul>
 			<li class="floatright"><a href="', $scripturl, '?action=help">', $txt['help'], '</a> ', (!empty($modSettings['requireAgreement'])) ? '| <a href="' . $scripturl . '?action=agreement">' . $txt['terms_and_rules'] . '</a>' : '', ' | <a href="#top_section">', $txt['go_up'], ' &#9650;</a></li>
 			<li class="copyright">', theme_copyright(), '</li>
+			<li class="copyright">',$txt['themecop'], '</li>
 		</ul>';
 
 	// Show the load time?
@@ -567,12 +576,12 @@ function template_menu()
 			echo '
 							<ul>';
 
-			foreach ($button['sub_buttons'] as $childbutton)
+			foreach ($button['sub_buttons'] as $ac => $childbutton)
 			{
 				echo '
 								<li', !empty($childbutton['sub_buttons']) ? ' class="subsections"' : '', '>
 									<a href="', $childbutton['href'], '"', isset($childbutton['target']) ? ' target="' . $childbutton['target'] . '"' : '', isset($childbutton['onclick']) ? ' onclick="' . $childbutton['onclick'] . '"' : '', '>
-										', $childbutton['title'], !empty($childbutton['amt']) ? ' <span class="amt">' . $childbutton['amt'] . '</span>' : '', '
+									<span class="main_icons ', $ac,'"></span> ', $childbutton['title'], !empty($childbutton['amt']) ? ' <span class="amt">' . $childbutton['amt'] . '</span>' : '', '
 									</a>';
 				// 3rd level menus :)
 				if (!empty($childbutton['sub_buttons']))
@@ -631,7 +640,7 @@ function template_button_strip($button_strip, $direction = '', $strip_options = 
 				$value['id'] = $key;
 
 			$button = '
-				<a class="button button_strip_' . $key . (!empty($value['active']) ? ' active' : '') . (isset($value['class']) ? ' ' . $value['class'] : '') . '" ' . (!empty($value['url']) ? 'href="' . $value['url'] . '"' : '') . ' ' . (isset($value['custom']) ? ' ' . $value['custom'] : '') . '>'.(!empty($value['icon']) ? '<span class="main_icons '.$value['icon'].'"></span>' : '').'' . $txt[$value['text']] . '</a>';
+			<a class="button button_strip_' . $key . (!empty($value['active']) ? ' active' : '') . (isset($value['class']) ? ' ' . $value['class'] : '') . '" ' . (!empty($value['url']) ? 'href="' . $value['url'] . '"' : '') . ' ' . (isset($value['custom']) ? ' ' . $value['custom'] : '') . '>'.(!empty($value['icon']) ? '<span class="main_icons '.$value['icon'].'"></span>' : '<span class="main_icons '.$key.'"></span> ').'' . $txt[$value['text']] . '</a>';
 
 			if (!empty($value['sub_buttons']))
 			{
@@ -790,21 +799,6 @@ function template_maint_warning_above()
 function template_maint_warning_below()
 {
 
-}
-
-add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
-
-function menu_ekle(array &$buttons){
-		$buttons = array_merge([
-			'portal' => [
-				'title'       => 'portal',
-				'href'        => 'url',
-				'icon'        => 'home',
-				'show'        => true,
-				'action_hook' => true,
-				'is_last'     => '',
-			],
-		], $buttons);
 }
 
 ?>
