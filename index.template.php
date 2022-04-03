@@ -820,7 +820,10 @@ function menu_ekle(array &$buttons){
 }
 
 function portal_anasayfa(){
-	global $context;
+	global $context, $scripturl, $txt;
+
+	$context['canonical_url'] = $scripturl;
+	$context['page_title'] = sprintf($txt['forum_index'], $context['forum_name']);
 
 	loadTemplate('portal_anasayfa');
 }
