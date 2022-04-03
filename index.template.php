@@ -831,7 +831,7 @@ function bbc_ekle_code(&$codes){
 					$alt = !empty($params['{alt}']) ? ' alt="' . $params['{alt}']. '"' : ' alt=""';
 					$title = !empty($params['{title}']) ? ' title="' . $params['{title}']. '"' : '';
 
-					$data = isset($disabled[$tag['tag']]) ? $url : '<img src="' . $url . '"' . $alt . $title . $params['{width}'] . $params['{height}'] . ' class="bbc_img' . (!empty($params['{width}']) || !empty($params['{height}']) ? ' resized' : '') . '" loading="lazy">';
+					$data = isset($disabled[$tag['tag']]) ? $url : '<img src="' . $url . '"' . $alt . $title . $params['{width}'] . $params['{height}'] . ' class="demo_resim bbc_img' . (!empty($params['{width}']) || !empty($params['{height}']) ? ' resized' : '') . '" loading="lazy">';
 				},
 				'disabled_content' => '($1)',
 		);
