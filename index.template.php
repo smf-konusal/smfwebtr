@@ -847,7 +847,7 @@ function bbc_ekle_code(&$codes){
 					else
 						$url = get_proxied_url($url);
 
-					$data = '<a href="'.$url.'" target="_blank" class="btn btn-danger">Demo</a>';
+					$data = '<a href="'.$url.'" target="_blank" class="btn btn-outline-danger">Demo</a>';
 				},
 				'disabled_content' => '($1)',
 		);
@@ -863,7 +863,7 @@ function bbc_ekle_code(&$codes){
 					else
 						$url = get_proxied_url($url);
 
-					$data = '<a href="'.$url.'" target="_blank" class="btn btn-success">Download</a>';
+					$data = '<a href="'.$url.'" target="_blank" class="btn btn-outline-success">Download</a>';
 				},
 				'disabled_content' => '($1)',
 		);
