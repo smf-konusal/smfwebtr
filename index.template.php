@@ -805,6 +805,25 @@ add_integration_function('integrate_default_action', 'portal_anasayfa', false, _
 add_integration_function('integrate_actions', 'portal_actions', false, __FILE__);
 add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 
+add_integration_function('integrate_bbc_buttons', 'bbc_ekle', false);
+
+function bbc_ekle(){
+	global $context;
+
+		$context['bbc_tags'][count($context['bbc_tags']) - 1][] = array(
+		// Required
+		'image' => 'bbc_hoverbg', // Name of PNG file to use for button icon
+		'code' => 'demo_theme',
+		'description' => 'htmlbutton',
+
+		// Deprecated. Define these in the JavaScript file instead.
+		// 'before' => '[html]',
+		// 'after' => '[/html]',
+		);
+
+	loadJavaScriptFile('demo_theme.js', array('minimize' => true), 'smf_demo_theme');
+}
+
 function menu_ekle(array &$buttons){
 	global $context, $scripturl;
 		$buttons = array_merge([

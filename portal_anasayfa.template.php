@@ -5,14 +5,11 @@ function template_main()
 ?>
 
 <div class="card">
-  <div class="card-header">
-    Bir Hadis
-  </div>
+  <h5 class="card-header">Bir Hadis</h5>
   <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p>Kolaylaştırınız! Zorlaştırmayınız! Müjdeleyiniz, nefret ettirmeyiniz! Birbirinizle anlaşın, iyi geçinin, ihtilâfa düşmeyin!"</p>
-      <footer class="blockquote-footer">(Buharî, 3:72)</footer>
-    </blockquote>
+    <h5 class="card-title">Kolaylaştırınız!</h5>
+    <p class="card-text">Kolaylaştırınız! Zorlaştırmayınız! Müjdeleyiniz, nefret ettirmeyiniz! Birbirinizle anlaşın, iyi geçinin, ihtilâfa düşmeyin!"</p>
+    <a href="#" class="btn btn-primary">(Buharî, 3:72)</a>
   </div>
 </div>
 
