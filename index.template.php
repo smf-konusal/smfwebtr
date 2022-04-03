@@ -888,7 +888,16 @@ function bbc_ekle(){
 
 function menu_ekle(array &$buttons){
 	global $context, $scripturl;
-		$buttons = array_merge([
+	$counter = 0;
+	foreach ($buttons as $name => $array)
+	{
+		$counter++;
+		if ($name == 'home')
+			break;
+	}
+		$buttons = array_merge(
+			array_slice($buttons, 0, $counter, TRUE),
+			[
 			'forum' => [
 				'title'       => 'Forum',
 				'href'        => $scripturl.'?action=forum',
@@ -896,7 +905,9 @@ function menu_ekle(array &$buttons){
 				'show'        => true,
 				'is_last'     => $context['right_to_left'],
 			],
-		], $buttons);
+			], 
+			 array_slice($buttons, $counter, NULL, TRUE),
+		);
 
 }
 
