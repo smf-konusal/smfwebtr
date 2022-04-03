@@ -808,7 +808,7 @@ add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 function menu_ekle(array &$buttons){
 
 		$buttons = array_merge([
-			'Forum' => [
+			'forum' => [
 				'title'       => 'Forum',
 				'href'        => $scripturl.'index.php?action=forum',
 				'icon'        => 'im_on',
