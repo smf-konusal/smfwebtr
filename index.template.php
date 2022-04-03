@@ -806,6 +806,68 @@ add_integration_function('integrate_actions', 'portal_actions', false, __FILE__)
 add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 
 add_integration_function('integrate_bbc_buttons', 'bbc_ekle', false);
+add_integration_function('integrate_bbc_codes', 'bbc_ekle_code', false);
+
+function bbc_ekle_code(&$codes){
+		$codes[] = array(
+				'tag' => 'demo_resim',
+				'type' => 'unparsed_content',
+				'parameters' => array(
+					'alt' => array('optional' => true),
+					'title' => array('optional' => true),
+					'width' => array('optional' => true, 'value' => ' width="$1"', 'match' => '(\d+)'),
+					'height' => array('optional' => true, 'value' => ' height="$1"', 'match' => '(\d+)'),
+				),
+				'content' => '$1',
+				'validate' => function(&$tag, &$data, $disabled, $params)
+				{
+					$url = iri_to_url(strtr($data, array('<br>' => '')));
+
+					if (parse_iri($url, PHP_URL_SCHEME) === null)
+						$url = '//' . ltrim($url, ':/');
+					else
+						$url = get_proxied_url($url);
+
+					$alt = !empty($params['{alt}']) ? ' alt="' . $params['{alt}']. '"' : ' alt=""';
+					$title = !empty($params['{title}']) ? ' title="' . $params['{title}']. '"' : '';
+
+					$data = isset($disabled[$tag['tag']]) ? $url : '<img src="' . $url . '"' . $alt . $title . $params['{width}'] . $params['{height}'] . ' class="bbc_img' . (!empty($params['{width}']) || !empty($params['{height}']) ? ' resized' : '') . '" loading="lazy">';
+				},
+				'disabled_content' => '($1)',
+		);
+		$codes[] = array(
+			'tag' => 'demo',
+			'type' => 'unparsed_content',
+			'content' => '$1',
+			'validate' => function(&$tag, &$data, $disabled, $params)
+				{
+					$url = iri_to_url(strtr($data, array('<br>' => '')));
+					if (parse_iri($url, PHP_URL_SCHEME) === null)
+						$url = '//' . ltrim($url, ':/');
+					else
+						$url = get_proxied_url($url);
+
+					$data = '<a href="'.$url.'" target="_blank" class="btn btn-danger">Demo</a>';
+				},
+				'disabled_content' => '($1)',
+		);
+		$codes[] = array(
+			'tag' => 'download',
+			'type' => 'unparsed_content',
+			'content' => '$1',
+			'validate' => function(&$tag, &$data, $disabled, $params)
+				{
+					$url = iri_to_url(strtr($data, array('<br>' => '')));
+					if (parse_iri($url, PHP_URL_SCHEME) === null)
+						$url = '//' . ltrim($url, ':/');
+					else
+						$url = get_proxied_url($url);
+
+					$data = '<a href="'.$url.'" target="_blank" class="btn btn-success">Download</a>';
+				},
+				'disabled_content' => '($1)',
+		);
+}
 
 function bbc_ekle(){
 	global $context;
