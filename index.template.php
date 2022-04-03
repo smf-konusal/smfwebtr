@@ -806,11 +806,11 @@ add_integration_function('integrate_actions', 'portal_actions', false, __FILE__)
 add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 
 function menu_ekle(array &$buttons){
-
+	global $context, $scripturl;
 		$buttons = array_merge([
 			'forum' => [
 				'title'       => 'Forum',
-				'href'        => $scripturl.'index.php?action=forum',
+				'href'        => $scripturl.'?action=forum',
 				'icon'        => 'im_on',
 				'show'        => true,
 				'is_last'     => $context['right_to_left'],
