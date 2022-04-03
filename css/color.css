@@ -83,7 +83,7 @@ textarea[disabled] {
 }
 hr {
   background: #fff;
-  box-shadow: 0 1px 0#bbb inset;
+  box-shadow: 0 1px 0 #bbb inset;
 }
 a,
 a:visited {
@@ -94,10 +94,7 @@ a.new_posts {
   background: linear-gradient(#f97b00, #884d00);
   color: #fff;
 }
-blockquote {
-  border: 1px solid #d6dfe2;
-  border-right: 2px solid #aaa;
-}
+
 blockquote cite {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -335,7 +332,7 @@ h1.forumtitle a {
 }
 .navigate_section ul li {
   color: #444;
-  text-shadow: 1px 1px 0#fff;
+  text-shadow: 1px 1px 0 #fff;
 }
 .navigate_section ul li .dividers {
   color: #3f6b8c;
@@ -493,7 +490,7 @@ h1.forumtitle a {
   color: #3f3f3f;
 }
 .list_posts {
-  box-shadow: 0 1px 0#fff inset;
+  box-shadow: 0 1px 0 #fff inset;
 }
 .boardslist > ul > li > ul {
   columns: 2 250px;
@@ -728,7 +725,7 @@ tr.windowbg:hover {
 .custom_fields_below_signature,
 .inner,
 .signature {
-  box-shadow: 0 1px 0#fff inset;
+  box-shadow: 0 1px 0 #fff inset;
 }
 #quickreply_options .roundframe {
   border-top-left-radius: 0;
@@ -797,7 +794,7 @@ h3.catbg a:hover {
   border-bottom: 1px solid #ddd;
   text-shadow: none;
   background: 0 0;
-  box-shadow: 0-1px 0#999 inset;
+  box-shadow: 0-1px 0 #999 inset;
 }
 .subbg,
 .titlebg,
