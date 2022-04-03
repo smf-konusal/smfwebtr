@@ -802,15 +802,31 @@ function template_maint_warning_below()
 }
 
 add_integration_function('integrate_default_action', 'portal_anasayfa', false, __FILE__);
+add_integration_function('integrate_actions', 'portal_actions', false, __FILE__);
+add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 
+function menu_ekle(array &$buttons){
+
+		$buttons = array_merge([
+			'Forum' => [
+				'title'       => 'Forum',
+				'href'        => $scripturl.'index.php?action=forum',
+				'icon'        => 'im_on',
+				'show'        => true,
+				'is_last'     => $context['right_to_left'],
+			],
+		], $buttons);
+
+}
 
 function portal_anasayfa(){
 	global $context;
-	echo 'merhaba';
 
 	loadTemplate('portal_anasayfa');
+}
 
-	//print_r($context['template_layers']);
+function portal_actions(array &$actions){
+	$actions['forum'] = ['BoardIndex.php', 'BoardIndex'];
 }
 
 ?>
