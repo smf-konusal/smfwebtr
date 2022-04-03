@@ -801,4 +801,16 @@ function template_maint_warning_below()
 
 }
 
+add_integration_function('integrate_default_action', 'portal_anasayfa', false, __FILE__);
+
+
+function portal_anasayfa(){
+	global $context;
+	echo 'merhaba';
+
+	loadTemplate('portal_anasayfa');
+
+	//print_r($context['template_layers']);
+}
+
 ?>
