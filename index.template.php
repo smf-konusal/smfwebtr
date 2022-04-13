@@ -944,9 +944,9 @@ function template_extra_above()
 	if(file_exists($settings['theme_dir'] . '/page_extra/' . $ne. '.template.php'))
 	{
 		loadtemplate('page_extra/'.$ne.'');
+	}else{
+		redirectexit($scripturl);
 	}
-	else
-		loadtemplate('page_extra/yok');
 }
 function template_extra_below()
 {
