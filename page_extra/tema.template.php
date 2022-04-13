@@ -4,5 +4,4 @@ function template_main(){
 Test dosyası';
 }
 
-print_r($context['user']['name']);
 ?>

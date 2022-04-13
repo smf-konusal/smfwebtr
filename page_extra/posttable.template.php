@@ -1,15 +1,20 @@
 <?php
 
 function template_main(){
+	global $context;
 	echo "Mehraba";
 
+	print_r($_POST);
+
+	json_encode($_POST);
+	
 	if(isset($_POST['title']) && !empty($context['user']['id'])){
 		konu_ekle_veri();
 	}
 }
 
 function konu_ekle_veri(){
-
+	global $smcFunc,$context;
 	if(!empty($_POST['title']) && !empty($_POST['message'])){
 		$title = $smcFunc['htmlspecialchars']($_POST['title']);
 		$boardid = (int)$_POST['boardid'];
