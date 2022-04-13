@@ -7,8 +7,8 @@ function template_main(){
 	print_r($_POST);
 
 	json_encode($_POST);
-	
-	if(isset($_POST['title']) && !empty($context['user']['id'])){
+
+	if(isset($_POST['title']) && !empty($context['user']['id']) && $context['user']['id'] != 0){
 		konu_ekle_veri();
 	}
 }

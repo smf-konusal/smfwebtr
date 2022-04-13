@@ -2,9 +2,7 @@
 
 function template_main(){
 	global $smcFunc;
-	echo "bot burası";
 
-		
 		$boards = boardsAllowedTo('post_new');
 		if (empty($boards))
 			fatal_lang_error('cannot_post_new');
@@ -36,7 +34,8 @@ function template_main(){
 		$smcFunc['db_free_result']($request);
 
 			if(!empty($context['post_boards'])) {
-			echo '					
+			echo '
+			Kategori Seç : 			
 			 <select name="boardid">';
 					foreach ($context['post_boards'] as $board) {
 						echo '
@@ -47,9 +46,17 @@ function template_main(){
 
 ?>
 <div id="sonuc"></div>
-<input type="text" id="title_id_15" name="title_id_15" placeholder="Konu başlık">
-<textarea id="message_id_15" name="message_id_15" cols="30" rows="10"></textarea>
-<button onclick="id_ekle_konu(15)">ID 15 ekle</button>
+<hr>
+<div class="row">
+	<div class="col-6">
+		<input type="text" id="title_id_15" name="title_id_15" class="form-control" placeholder="Konu başlık">
+		<textarea id="message_id_15" name="message_id_15" class="form-control" cols="10" rows="5"></textarea>
+	</div>
+	<div class="col-6">
+		<button onclick="id_ekle_konu(15)">ID 15 ekle</button>
+	</div>
+</div>
+<hr>
 
 
 <script>
