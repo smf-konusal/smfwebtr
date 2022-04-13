@@ -269,12 +269,14 @@ if(!empty($limit))
 					<a href="', $news['href'], '">', $news['subject'], '</a>
 				</h3>
 				<div class="news_timestamp">', $news['time'], ' ', $txt['by'], ' ', $news['poster']['link'], '</div>
-				<div class="news_body" style="padding: 2ex 0;">
-        
+				<div class="news_body" style="padding: 2ex 0;">';
+       
+       /* 
         ', $news['demo_resim'], '<br>
         ', $news['demo'], '<br>
         ', $news['download'], '<br>
-        
+        */
+        echo '
         ', $news['body'], '
         </div>
 				', $news['link'], $news['locked'] ? '' : ' | ' . $news['comment_link'], '';
