@@ -898,7 +898,6 @@ function menu_ekle(array &$buttons){
 	}
 	
 		
-		/*
 		$buttons = array_merge(
 			array_slice($buttons, 0, $counter, TRUE),
 			['forum' => [
@@ -909,8 +908,9 @@ function menu_ekle(array &$buttons){
 				'is_last'     => $context['right_to_left'],
 				],
 			], 
-			array_slice($buttons, $counter, NULL, TRUE),
+			array_slice($buttons, $counter, NULL, TRUE)
 		);	
+		/*
 		*/
 
 }
