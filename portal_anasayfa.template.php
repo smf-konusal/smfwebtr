@@ -91,8 +91,9 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 				COUNT(*) as total
 			FROM {db_prefix}topics AS t
 				LEFT JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_first_msg)
-			WHERE t.id_first_msg',
+			WHERE t.id_first_msg'
 		);
+
   if($smcFunc['db_num_rows']($request)>0)
   $total_bolum = $smcFunc['db_fetch_assoc']($request);
 else

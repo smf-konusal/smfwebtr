@@ -808,6 +808,7 @@ add_integration_function('integrate_menu_buttons', 'menu_ekle', false);
 add_integration_function('integrate_bbc_buttons', 'bbc_ekle', false);
 add_integration_function('integrate_bbc_codes', 'bbc_ekle_code', false);
 
+
 function bbc_ekle_code(&$codes){
 		$codes[] = array(
 				'tag' => 'demo_resim',
@@ -895,19 +896,22 @@ function menu_ekle(array &$buttons){
 		if ($name == 'home')
 			break;
 	}
+	
+		
+		/*
 		$buttons = array_merge(
 			array_slice($buttons, 0, $counter, TRUE),
-			[
-			'forum' => [
+			['forum' => [
 				'title'       => 'Forum',
 				'href'        => $scripturl.'?action=forum',
 				'icon'        => 'im_on',
 				'show'        => true,
 				'is_last'     => $context['right_to_left'],
-			],
+				],
 			], 
-			 array_slice($buttons, $counter, NULL, TRUE),
-		);
+			array_slice($buttons, $counter, NULL, TRUE),
+		);	
+		*/
 
 }
 
@@ -921,7 +925,10 @@ function portal_anasayfa(){
 }
 
 function portal_actions(array &$actions){
+	global $context;
+	print_r($context);
 	$actions['forum'] = ['BoardIndex.php', 'BoardIndex'];
+	$actions['botsan'] = ['Botsan.php', 'BotIndex'];
 }
 
 ?>
