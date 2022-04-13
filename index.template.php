@@ -77,6 +77,8 @@ function template_init()
 		'extra_after' => '',
 	);
 
+	$settings['catch_action'] = array('layers' => array('html','body','extra'));
+
 	// Allow css/js files to be disabled for this specific theme.
 	// Add the identifier as an array key. IE array('smf_script'); Some external files might not add identifiers, on those cases SMF uses its filename as reference.
 	if (!isset($settings['disable_files']))
@@ -926,9 +928,30 @@ function portal_anasayfa(){
 
 function portal_actions(array &$actions){
 	global $context;
-	print_r($context);
 	$actions['forum'] = ['BoardIndex.php', 'BoardIndex'];
 	$actions['botsan'] = ['Botsan.php', 'BotIndex'];
 }
+
+
+
+function template_extra_above()
+{
+	global $context, $settings, $options, $scripturl, $txt,$sourcedir,$modSettings;
+
+	if(isset($_GET['action']))
+		$ne=$_GET['action'];
+
+	if(file_exists($settings['theme_dir'] . '/page_extra/' . $ne. '.template.php'))
+	{
+		loadtemplate('page_extra/'.$ne.'');
+	}
+	else
+		loadtemplate('page_extra/yok');
+}
+function template_extra_below()
+{
+
+}
+
 
 ?>
