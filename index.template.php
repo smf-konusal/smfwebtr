@@ -929,7 +929,6 @@ function portal_anasayfa(){
 function portal_actions(array &$actions){
 	global $context;
 	$actions['forum'] = ['BoardIndex.php', 'BoardIndex'];
-	$actions['botsan'] = ['Botsan.php', 'BotIndex'];
 }
 
 

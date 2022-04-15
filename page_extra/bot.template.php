@@ -93,10 +93,9 @@ echo '
 
 
 if(isset($_GET['bot'])){
-
-	echo $_GET['bot'];
-
-	require_once "bot_page/".$_GET['bot'].".php";
+	if(file_exists("bot_page/".$_GET['bot'].".php")){
+		require_once "bot_page/".$_GET['bot'].".php";
+	}
 }
 
 
