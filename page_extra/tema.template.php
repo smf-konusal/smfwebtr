@@ -2,7 +2,7 @@
 function template_main(){
 
       echo '<div class="row">';
-         ssi_boardNews($board = 7, $limit = 4, $start = 0, $length = 400, $output_method = 'echo');
+         ssi_boardNews($board = 3, $limit = 4, $start = 0, $length = 400, $output_method = 'echo');
       echo '</div>';
 
 }
@@ -39,31 +39,25 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 
   $limit = max(0, $limit);
   $start = max(0, $start);
-    $boards = array();
-  // Make sure guests can see this board.
   $request = $smcFunc['db_query']('', '
-    SELECT id_board
-    FROM {db_prefix}boards
-    WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
-      AND ') . 'FIND_IN_SET(-1, member_groups) != 0',
-    array(
-      'current_board' => $board,
-    )
-  );
-  if ($smcFunc['db_num_rows']($request) == 0)
-  {
-    if ($output_method == 'echo')
-      die($txt['ssi_no_guests']);
-    else
-      return array();
-  }
-  while ($row = $smcFunc['db_fetch_assoc']($request))
-  { 
-  $boards[] = $row['id_board'];
-  }
-  list ($board) = $smcFunc['db_fetch_row']($request);
-  $smcFunc['db_free_result']($request);
-  $boards=implode(', ',$boards);
+		SELECT id_board
+		FROM {db_prefix}boards
+		WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
+			AND ') . 'FIND_IN_SET(-1, member_groups) != 0
+		LIMIT 1',
+		array(
+			'current_board' => $board,
+		)
+	);
+	if ($smcFunc['db_num_rows']($request) == 0)
+	{
+		if ($output_method == 'echo')
+			die($txt['ssi_no_guests']);
+		else
+			return array();
+	}
+	list ($board) = $smcFunc['db_fetch_row']($request);
+	$smcFunc['db_free_result']($request);
   $icon_sources = array();
   foreach ($context['stable_icons'] as $icon)
     $icon_sources[$icon] = 'images_url';
@@ -82,7 +76,10 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
         COUNT(*) as total
       FROM {db_prefix}topics AS t
         LEFT JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_first_msg)
-      WHERE t.id_first_msg'
+        WHERE t.id_board = {int:current_board}',
+        array(
+          'current_board' => $board,
+        )
     );
 
   if($smcFunc['db_num_rows']($request)>0)
@@ -99,68 +96,58 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 
   if(!empty($limit))
   {
-    $context['page_index'] = constructPageIndex($scripturl . '?start=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
+    $context['page_index'] = constructPageIndex($scripturl . '?action=tema=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
     $start = $_REQUEST['start'];
   // Set a canonical URL for this page.
     $context['links'] = array(
-      'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.0' : '',
-      'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
-      'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
-      'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
+      'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema=' . $start. '.0' : '',
+      'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
+      'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
+      'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
     );
   }
 
 
     //sayfalama için bitiş
 
-  // Find the post ids.
-  $request = $smcFunc['db_query']('substring', '
-    SELECT
-      m.poster_time, m.subject, m.id_topic, m.id_msg, b.id_board, b.name AS board_name,mem.id_member, mem.avatar,
-      SUBSTRING(m.body,1,100) as body, t.num_replies, t.num_views,
-      IFNULL(mem.real_name, m.poster_name) AS poster_name ,ml.id_msg_modified,t.id_first_msg,
-      IFNULL(a.id_attach, 0) AS ID_ATTACH, a.filename, a.attachment_type as attachmentType
-    FROM {db_prefix}topics AS t
-      INNER JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
-      LEFT JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_last_msg)
-      LEFT JOIN {db_prefix}boards AS b ON (b.id_board = t.id_board)
-      LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = m.id_member)
-      LEFT JOIN {db_prefix}attachments AS a ON (a.id_member = mem.id_member)
-    
-    WHERE b.id_cat IN(' . $boards . ')
-      AND {query_wanna_see_board}' . ($modSettings['postmod_active'] ? '
-      AND t.approved = {int:is_approved}
-      AND m.approved = {int:is_approved}' : '') . '
-    ORDER BY t.id_first_msg DESC
-    LIMIT ' . $start . ', ' . $limit,
-    array(
-      'current_board' => $board,
-      'is_approved' => 1,
-    )
-  );
-  $posts = array();
-  while ($row = $smcFunc['db_fetch_assoc']($request))
-    $posts[] = $row['id_first_msg'];
-  $smcFunc['db_free_result']($request);
+ 	// Find the post ids.
+   $request = $smcFunc['db_query']('', '
+   SELECT t.id_first_msg
+   FROM {db_prefix}topics as t
+     LEFT JOIN {db_prefix}boards as b ON (b.id_board = t.id_board)
+   WHERE t.id_board = {int:current_board}' . ($modSettings['postmod_active'] ? '
+     AND t.approved = {int:is_approved}' : '') . '
+     AND {query_see_board}
+   ORDER BY t.id_first_msg DESC
+   LIMIT ' . $start . ', ' . $limit,
+   array(
+     'current_board' => $board,
+     'is_approved' => 1,
+   )
+ );
+ $posts = array();
+ while ($row = $smcFunc['db_fetch_assoc']($request))
+   $posts[] = $row['id_first_msg'];
+ $smcFunc['db_free_result']($request);
 
-  if (empty($posts))
-    return array();
+ if (empty($posts))
+   return array();
 
-  // Find the posts.
-  $request = $smcFunc['db_query']('', '
-    SELECT
-      m.icon, m.subject, m.body, COALESCE(mem.real_name, m.poster_name) AS poster_name, m.poster_time, m.likes,
-      t.num_replies, t.id_topic, m.id_member, m.smileys_enabled, m.id_msg, t.locked, t.id_last_msg, m.id_board
-    FROM {db_prefix}topics AS t
-      INNER JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_first_msg)
-      LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = m.id_member)
-    WHERE t.id_first_msg IN ({array_int:post_list})
-    ORDER BY t.id_first_msg DESC
-    LIMIT ' . count($posts),
-    array(
-      'post_list' => $posts,
-    )
-  );
+ // Find the posts.
+ $request = $smcFunc['db_query']('', '
+   SELECT
+     m.icon, m.subject, m.body, COALESCE(mem.real_name, m.poster_name) AS poster_name, m.poster_time, m.likes,
+     t.num_replies, t.id_topic, m.id_member, m.smileys_enabled, m.id_msg, t.locked, t.id_last_msg, m.id_board
+   FROM {db_prefix}topics AS t
+     INNER JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_first_msg)
+     LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = m.id_member)
+   WHERE t.id_first_msg IN ({array_int:post_list})
+   ORDER BY t.id_first_msg DESC
+   LIMIT ' . count($posts),
+   array(
+     'post_list' => $posts,
+   )
+ );
   $return = array();
   $recycle_board = !empty($modSettings['recycle_enable']) && !empty($modSettings['recycle_board']) ? (int) $modSettings['recycle_board'] : 0;
   while ($row = $smcFunc['db_fetch_assoc']($request))
