@@ -52,7 +52,7 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 
 	$limit = max(0, $limit);
 	$start = max(0, $start);
-$boards = array();
+		$boards = array();
 	// Make sure guests can see this board.
 	$request = $smcFunc['db_query']('', '
 		SELECT id_board
@@ -88,7 +88,7 @@ $boards = array();
 
 
 
-//sayfalama için başlangıç
+		//sayfalama için başlangıç
 
 	$request = $smcFunc['db_query']('substring', '
 			SELECT
@@ -100,31 +100,31 @@ $boards = array();
 
   if($smcFunc['db_num_rows']($request)>0)
   $total_bolum = $smcFunc['db_fetch_assoc']($request);
-else
-  return;
-$smcFunc['db_free_result']($request);
+	else
+	  return;
+		$smcFunc['db_free_result']($request);
 
-if(empty($total_bolum['total']))
-  return;
+	if(empty($total_bolum['total']))
+	  return;
 
-if(empty($start))
-  $start = 0;
+	if(empty($start))
+	  $start = 0;
 
-if(!empty($limit))
-{
-  $context['page_index'] = constructPageIndex($scripturl . '?start=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
-  $start = $_REQUEST['start'];
-// Set a canonical URL for this page.
-  $context['links'] = array(
-    'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.0' : '',
-    'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
-    'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
-    'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
-  );
-}
+	if(!empty($limit))
+	{
+	  $context['page_index'] = constructPageIndex($scripturl . '?start=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
+	  $start = $_REQUEST['start'];
+	// Set a canonical URL for this page.
+	  $context['links'] = array(
+	    'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.0' : '',
+	    'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?start=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
+	    'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
+	    'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?start=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
+	  );
+	}
 
 
-//sayfalama için bitiş
+		//sayfalama için bitiş
 
 	// Find the post ids.
 	$request = $smcFunc['db_query']('substring', '
