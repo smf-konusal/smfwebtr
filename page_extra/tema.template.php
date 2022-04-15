@@ -2,7 +2,7 @@
 function template_main(){
 
       echo '<div class="row">';
-         ssi_boardNews($board = 3, $limit = 4, $start = 0, $length = 400, $output_method = 'echo');
+         ssi_boardNews($board = 7, $limit = 4, $start = 0, $length = 400, $output_method = 'echo');
       echo '</div>';
 
 }
@@ -43,8 +43,7 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 		SELECT id_board
 		FROM {db_prefix}boards
 		WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
-			AND ') . 'FIND_IN_SET(-1, member_groups) != 0
-		LIMIT 1',
+			AND ') . 'FIND_IN_SET(-1, member_groups) != 0',
 		array(
 			'current_board' => $board,
 		)
@@ -96,14 +95,14 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 
   if(!empty($limit))
   {
-    $context['page_index'] = constructPageIndex($scripturl . '?action=tema=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
+    $context['page_index'] = constructPageIndex($scripturl . '?action=tema;start=%1$d', $_REQUEST['start'] , $total_bolum['total'], $limit, true);
     $start = $_REQUEST['start'];
   // Set a canonical URL for this page.
     $context['links'] = array(
-      'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema=' . $start. '.0' : '',
-      'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
-      'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
-      'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
+      'first' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema;start=' . $start. '.0' : '',
+      'prev' => $_REQUEST['start'] >= $total_bolum['total'] ? $scripturl . '?action=tema;start=' . $start. '.' . ($_REQUEST['start'] - $total_bolum['total']) : '',
+      'next' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema;start=' . $start . '.' . ($_REQUEST['start'] + $total_bolum['total']) : '',
+      'last' => $_REQUEST['start'] + $total_bolum['total'] < $total_bolum['total'] ? $scripturl . '?action=tema;start=' . $start . '.' . (floor(($board_info['total_topics'] - 1) / $total_bolum['total']) * $total_bolum['total']) : '',
     );
   }
 
