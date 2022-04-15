@@ -51,14 +51,13 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 
 	$limit = max(0, $limit);
 	$start = max(0, $start);
-
+$boards = array();
 	// Make sure guests can see this board.
 	$request = $smcFunc['db_query']('', '
 		SELECT id_board
 		FROM {db_prefix}boards
 		WHERE ' . ($board === null ? '' : 'id_board = {int:current_board}
-			AND ') . 'FIND_IN_SET(-1, member_groups) != 0
-		LIMIT 1',
+			AND ') . 'FIND_IN_SET(-1, member_groups) != 0',
 		array(
 			'current_board' => $board,
 		)
@@ -70,9 +69,13 @@ function ssi_boardNews($board = null, $limit = null, $start = null, $length = nu
 		else
 			return array();
 	}
+	while ($row = $smcFunc['db_fetch_assoc']($request))
+	{	
+	$boards[] = $row['id_board'];
+	}
 	list ($board) = $smcFunc['db_fetch_row']($request);
 	$smcFunc['db_free_result']($request);
-
+	$boards=implode(', ',$boards);
 	$icon_sources = array();
 	foreach ($context['stable_icons'] as $icon)
 		$icon_sources[$icon] = 'images_url';
@@ -123,13 +126,23 @@ if(!empty($limit))
 //sayfalama için bitiş
 
 	// Find the post ids.
-	$request = $smcFunc['db_query']('', '
-		SELECT t.id_first_msg
-		FROM {db_prefix}topics as t
-			LEFT JOIN {db_prefix}boards as b ON (b.id_board = t.id_board)
-		WHERE t.id_board = {int:current_board}' . ($modSettings['postmod_active'] ? '
-			AND t.approved = {int:is_approved}' : '') . '
-			AND {query_see_board}
+	$request = $smcFunc['db_query']('substring', '
+		SELECT
+			m.poster_time, m.subject, m.id_topic, m.id_msg, b.id_board, b.name AS board_name,mem.id_member, mem.avatar,
+			SUBSTRING(m.body,1,100) as body, t.num_replies, t.num_views,
+			IFNULL(mem.real_name, m.poster_name) AS poster_name ,ml.id_msg_modified,t.id_first_msg,
+			IFNULL(a.id_attach, 0) AS ID_ATTACH, a.filename, a.attachment_type as attachmentType
+		FROM {db_prefix}topics AS t
+			INNER JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
+			LEFT JOIN {db_prefix}messages AS m ON (m.id_msg = t.id_last_msg)
+			LEFT JOIN {db_prefix}boards AS b ON (b.id_board = t.id_board)
+			LEFT JOIN {db_prefix}members AS mem ON (mem.id_member = m.id_member)
+			LEFT JOIN {db_prefix}attachments AS a ON (a.id_member = mem.id_member)
+		
+		WHERE b.id_cat IN(' . $boards . ')
+			AND {query_wanna_see_board}' . ($modSettings['postmod_active'] ? '
+			AND t.approved = {int:is_approved}
+			AND m.approved = {int:is_approved}' : '') . '
 		ORDER BY t.id_first_msg DESC
 		LIMIT ' . $start . ', ' . $limit,
 		array(
