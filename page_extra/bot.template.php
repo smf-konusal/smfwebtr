@@ -26,7 +26,15 @@ class Baglan{
 
 
 function template_main(){
-	global $smcFunc;
+	global $smcFunc,$context,$scripturl;
+
+		$var_uye_array=array(1,2,3,4);
+
+		if(in_array($context['user']['id'], $var_uye_array)){
+
+		}else{
+			redirectexit($scripturl);
+		}
 
 		$boards = boardsAllowedTo('post_new');
 		if (empty($boards))
@@ -70,7 +78,7 @@ function template_main(){
 			} 
 
 
-$bot_array_page = array('tooplate');
+$bot_array_page = array('tooplate', 'freecsscom');
 
 echo '
 <div class="row">
@@ -91,10 +99,11 @@ echo '
 	</form>
 </div>';
 
-
 if(isset($_GET['bot'])){
-	if(file_exists("bot_page/".$_GET['bot'].".php")){
+	if(file_exists(__DIR__."/bot_page/".$_GET['bot'].".php")){
 		require_once "bot_page/".$_GET['bot'].".php";
+	}else{
+		echo 'yok';
 	}
 }
 

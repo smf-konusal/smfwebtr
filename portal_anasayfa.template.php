@@ -3,21 +3,22 @@
 function template_main()
 {
 ?>
-
-<div class="card">
-  <h5 class="card-header">Bir Hadis</h5>
-  <div class="card-body">
-    <h5 class="card-title">Kolaylaştırınız!</h5>
-    <p class="card-text">Kolaylaştırınız! Zorlaştırmayınız! Müjdeleyiniz, nefret ettirmeyiniz! Birbirinizle anlaşın, iyi geçinin, ihtilâfa düşmeyin!"</p>
-    <a href="#" class="btn btn-primary">(Buharî, 3:72)</a>
+<div class="card border-success mb-3">
+  <div class="card-header bg-transparent border-success">Bir Hadis</div>
+  <div class="card-body text-success">
+    <h5 class="card-title">Kolaylaştırınız! Zorlaştırmayınız! Müjdeleyiniz, nefret ettirmeyiniz! Birbirinizle anlaşın, iyi geçinin, ihtilâfa düşmeyin!"</h5>
+    <p class="card-text"></p>
   </div>
+  <div class="card-footer bg-transparent border-success">(Buharî, 3:72)</div>
 </div>
 
 <?php
 
 //örnek olsun diye can sıkıntısına yapıldı :D ssi boardnews fonksiyonu koyalayıp yaptım sen geliştirirsin cemo :D istersen sil gitsin
 
-ssi_boardNews($board = null, $limit = 2, $start = 0, $length = null, $output_method = 'echo');
+echo '<div class="row">';
+ssi_boardNews($board = null, $limit = 4, $start = 0, $length = 400, $output_method = 'echo');
+echo '</div>';
 }
 
 
@@ -239,10 +240,10 @@ if(!empty($limit))
 
 
 			'href' => $scripturl . '?topic=' . $row['id_topic'] . '.0',
-			'link' => '<a href="' . $scripturl . '?topic=' . $row['id_topic'] . '.0">' . $row['num_replies'] . ' ' . ($row['num_replies'] == 1 ? $txt['ssi_comment'] : $txt['ssi_comments']) . '</a>',
+			'link' => '<a class="card-link" href="' . $scripturl . '?topic=' . $row['id_topic'] . '.0">' . $row['num_replies'] . ' ' . ($row['num_replies'] == 1 ? $txt['ssi_comment'] : $txt['ssi_comments']) . '</a>',
 			'replies' => $row['num_replies'],
 			'comment_href' => !empty($row['locked']) ? '' : $scripturl . '?action=post;topic=' . $row['id_topic'] . '.' . $row['num_replies'] . ';last_msg=' . $row['id_last_msg'],
-			'comment_link' => !empty($row['locked']) ? '' : '<a href="' . $scripturl . '?action=post;topic=' . $row['id_topic'] . '.' . $row['num_replies'] . ';last_msg=' . $row['id_last_msg'] . '">' . $txt['ssi_write_comment'] . '</a>',
+			'comment_link' => !empty($row['locked']) ? '' : '<a class="card-link" href="' . $scripturl . '?action=post;topic=' . $row['id_topic'] . '.' . $row['num_replies'] . ';last_msg=' . $row['id_last_msg'] . '">' . $txt['ssi_write_comment'] . '</a>',
 			'new_comment' => !empty($row['locked']) ? '' : '<a href="' . $scripturl . '?action=post;topic=' . $row['id_topic'] . '.' . $row['num_replies'] . '">' . $txt['ssi_write_comment'] . '</a>',
 			'poster' => array(
 				'id' => $row['id_member'],
@@ -276,13 +277,15 @@ if(!empty($limit))
 	foreach ($return as $news)
 	{
 		echo '
-			<div class="news_item">
-				<h3 class="news_header">
+		<div class="col-6 pb-2">
+		<div class="card">
+		  <div class="card-body">
+				<h3 class="card-title">
 					', $news['icon'], '
 					<a href="', $news['href'], '">', $news['subject'], '</a>
 				</h3>
-				<div class="news_timestamp">', $news['time'], ' ', $txt['by'], ' ', $news['poster']['link'], '</div>
-				<div class="news_body" style="padding: 2ex 0;">';
+				<div class="card-subtitle mb-2 text-muted">', $news['time'], ' ', $txt['by'], ' ', $news['poster']['link'], '</div>
+				<div class="card-text" style="padding: 2ex 0;">';
        
        /* 
         ', $news['demo_resim'], '<br>
@@ -328,11 +331,13 @@ if(!empty($limit))
 
 		// Close the main div.
 		echo '
-			</div>';
+		  </div>
+		  </div>
+		</div>';
 
-		if (!$news['is_last'])
-			echo '
-			<hr>';
+		if (!$news['is_last']){
+			//echo '<hr>';
+		}
 	}
   //sayfalama html
   echo '
