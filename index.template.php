@@ -134,6 +134,8 @@ function template_html_above()
 	// load in any javascript files from mods and themes
 	template_javascript();
 
+	echo '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3305202446247220" crossorigin="anonymous"></script>';
+
 	echo '
 	<title>', $context['page_title_html_safe'], '</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">';
